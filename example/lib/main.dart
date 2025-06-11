@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:log_manager/log_manager.dart';
 
+int counter = 0;
+
 void main() {
   LogManager().init(
     onAppStart: () {
@@ -65,6 +67,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    LogManager.setOnLogCreated((String message) {
+      setState(() {
+        counter++;
+      });
+    });
+
     return Scaffold(
       appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.inversePrimary, title: Text(widget.title)),
       body: Center(
@@ -72,6 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           spacing: 5,
           children: <Widget>[
+            Text('Log was created $counter times.'),
             ElevatedButton(
               onPressed: () {
                 onPrintExample();
