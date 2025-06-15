@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
-abstract class LogPrinter {
-  static void print(String message, {String? label, ZoneDelegate? delegate, Zone? zone, bool pretty = false}) {
+class ConsoleManager {
+  void print(String message, {String? label, ZoneDelegate? delegate, Zone? zone, bool pretty = false}) {
     if (pretty) {
       prettyPrint(message, label: label, delegate: delegate, zone: zone);
     } else {
@@ -11,7 +11,7 @@ abstract class LogPrinter {
     }
   }
 
-  static void normalPrint(String message, {String? label, ZoneDelegate? delegate, Zone? zone}) {
+  void normalPrint(String message, {String? label, ZoneDelegate? delegate, Zone? zone}) {
     if (delegate != null && zone != null) {
       delegate.print(zone, message);
     } else {
@@ -29,24 +29,22 @@ abstract class LogPrinter {
     }
   }
 
-  static void prettyPrint(String message, {String? label, ZoneDelegate? delegate, Zone? zone}) {
+  void prettyPrint(String message, {String? label, ZoneDelegate? delegate, Zone? zone}) {
     String divider = '-' * 80;
     if (delegate != null && zone != null) {
-      delegate.print(zone, '');
       if (label != null) {
         delegate.print(zone, label);
       }
       delegate.print(zone, divider);
-      delegate.print(zone, '>   $message');
+      delegate.print(zone, message);
       delegate.print(zone, divider);
     } else {
       if (Zone.current.parent != null) {
-        Zone.current.parent!.print('');
         if (label != null) {
           Zone.current.parent!.print(label);
         }
         Zone.current.parent!.print(divider);
-        Zone.current.parent!.print('>   $message');
+        Zone.current.parent!.print(message);
         Zone.current.parent!.print(divider);
       } else {
         Zone.current.print('');
@@ -54,13 +52,13 @@ abstract class LogPrinter {
           Zone.current.print(label);
         }
         Zone.current.print(divider);
-        Zone.current.print('>   $message');
+        Zone.current.print(message);
         Zone.current.print(divider);
       }
     }
   }
 
-  static void printStack({
+  void printStack({
     StackTrace? stackTrace,
     String? label,
     ZoneDelegate? delegate,
