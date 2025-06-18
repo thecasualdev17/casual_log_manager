@@ -35,9 +35,8 @@ class NetworkManager {
   Future<bool> sendLog({required String networkUrl, required Map<String, String> body}) async {
     assert(networkUrl.isNotEmpty, 'Network Url must be provided');
     try {
-      final response = await _client
-          .post(Uri.parse(networkUrl), body: jsonEncode(body), headers: networkOptions.headers)
-          .timeout(Duration(seconds: 5));
+      final response = await _client.post(Uri.parse(networkUrl),
+          body: jsonEncode(body), headers: {"content-type": "application/json"}).timeout(Duration(seconds: 5));
       if (response.statusCode == 200) {
         return true;
       } else {
