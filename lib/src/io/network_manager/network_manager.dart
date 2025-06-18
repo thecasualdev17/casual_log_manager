@@ -42,6 +42,7 @@ class NetworkManager {
       } else {
         developer.log(response.statusCode.toString());
         developer.log(response.body.toString());
+        developer.log(response.headersSplitValues.toString());
         return false;
       }
     } catch (e) {
