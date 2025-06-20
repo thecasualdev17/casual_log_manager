@@ -62,7 +62,8 @@ class LogManagerIO {
   }
 
   /// Handles uncaught exceptions and logs them as errors.
-  Future<void> catchUnhandledExceptions(Object error, StackTrace? stack, Options options) async {
+  Future<void> catchUnhandledExceptions(
+      Object error, StackTrace? stack, Options options) async {
     await createLog(
       error.toString(),
       logLevel: LogLevel.ERROR,
@@ -109,7 +110,7 @@ class LogManagerIO {
         _rootPath = (await getApplicationDocumentsDirectory()).path;
       }
 
-      _fileManager.initialize(
+      await _fileManager.initialize(
         logDirectory: '$_rootPath/logs',
         archiveDirectory: '$_rootPath/archive',
         extension: fileOptions.fileExtension,
@@ -124,7 +125,8 @@ class LogManagerIO {
   void cleanOldLogsFromArchive() async {
     final existingLogs = await _fileManager.listArchivedLogFiles();
     for (var logFile in existingLogs) {
-      if (await _fileManager.getFileAge(fileName: logFile) > fileOptions.maxLogAge) {
+      if (await _fileManager.getFileAge(fileName: logFile) >
+          fileOptions.maxLogAge) {
         await _fileManager.deleteLogFile(fileName: logFile);
       }
     }
@@ -214,33 +216,42 @@ class LogManagerIO {
 
   /// Sends all pending network logs in batches and clears the log file if successful.
   Future<void> sendNetworkLogs() async {
-    List<String> contents = await _fileManager.readNetworkLogFile(fileName: networkOptions.networkLogsFileName);
+    List<String> contents = await _fileManager.readNetworkLogFile(
+        fileName: networkOptions.networkLogsFileName);
     if (contents.isEmpty) {
       return;
     }
     List<List<Map<String, String>>> requests = [];
     while (contents.isNotEmpty) {
       if (contents.length > networkOptions.maxLogsPerBatch) {
-        List<Map<String, String>> body =
-            contents.getRange(0, networkOptions.maxLogsPerBatch).map((String e) => {'body': e}).toList();
+        List<Map<String, String>> body = contents
+            .getRange(0, networkOptions.maxLogsPerBatch)
+            .map((String e) => {'body': e})
+            .toList();
         requests.add(body);
-        contents = contents.sublist(networkOptions.maxLogsPerBatch, contents.length);
+        contents =
+            contents.sublist(networkOptions.maxLogsPerBatch, contents.length);
       } else {
-        List<Map<String, String>> body = contents.map((String e) => {'body': e}).toList();
+        List<Map<String, String>> body =
+            contents.map((String e) => {'body': e}).toList();
         contents.clear();
         requests.add(body);
       }
     }
 
-    final res = await Future.wait(requests.map((e) async {
-      return await _networkManager.sendMultipleLogs(
-        networkUrl: networkOptions.networkUrl,
-        logs: e,
-      );
-    }));
+    final res = await Future.wait(
+      requests.map((e) async {
+        return await _networkManager.sendMultipleLogs(
+          networkUrl: networkOptions.networkUrl,
+          logs: e,
+        );
+      }),
+    );
 
     if (res.every((element) => element == true)) {
-      await _fileManager.deleteNetworkLogFile(fileName: networkOptions.networkLogsFileName);
+      await _fileManager.deleteNetworkLogFile(
+        fileName: networkOptions.networkLogsFileName,
+      );
       return;
     }
   }
@@ -260,18 +271,24 @@ class LogManagerIO {
       int counter = 0;
       for (var line in lines..removeAt(0)) {
         if (counter > networkOptions.maxFrames) break;
-        buffer.write('$counter${line.split(options.logDelimiter).last.replaceAll(RegExp(r"\s+"), ' ')}|');
+        buffer.write(
+          '$counter${line.split(options.logDelimiter).last.replaceAll(RegExp(r"\s+"), ' ')}|',
+        );
         counter++;
       }
       stack = buffer.toString();
     }
-    String timeStampMsg = networkOptions.logFormatter.call(timeStamp, 'timestamp');
+    String timeStampMsg =
+        networkOptions.logFormatter.call(timeStamp, 'timestamp');
     String logLevelMsg = networkOptions.logFormatter.call(logLevel, 'level');
     String logLabelMsg = networkOptions.logFormatter.call(logLabel, 'label');
-    String logMessageMsg = networkOptions.logFormatter.call(logMessage, 'message');
-    String networkContent = '$timeStampMsg $logLevelMsg $logLabelMsg $logMessageMsg';
+    String logMessageMsg =
+        networkOptions.logFormatter.call(logMessage, 'message');
+    String networkContent =
+        '$timeStampMsg $logLevelMsg $logLabelMsg $logMessageMsg';
     if (stack.isNotEmpty) {
-      networkContent += ' ${networkOptions.logFormatter(stack.toString(), 'trace')}';
+      networkContent +=
+          ' ${networkOptions.logFormatter(stack.toString(), 'trace')}';
     }
     return '$networkContent\n';
   }

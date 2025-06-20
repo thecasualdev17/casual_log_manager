@@ -11,7 +11,11 @@ class ConsoleManager {
   /// [label] is an optional label to print before the message.
   /// [delegate] and [zone] allow custom zone-based printing.
   /// [pretty] enables pretty-printing with dividers.
-  void print(String message, {String? label, ZoneDelegate? delegate, Zone? zone, bool pretty = false}) {
+  void print(String message,
+      {String? label,
+      ZoneDelegate? delegate,
+      Zone? zone,
+      bool pretty = false}) {
     if (pretty) {
       prettyPrint(message, label: label, delegate: delegate, zone: zone);
     } else {
@@ -24,7 +28,8 @@ class ConsoleManager {
   /// [message] is the text to print.
   /// [label] is an optional label to print before the message.
   /// [delegate] and [zone] allow custom zone-based printing.
-  void normalPrint(String message, {String? label, ZoneDelegate? delegate, Zone? zone}) {
+  void normalPrint(String message,
+      {String? label, ZoneDelegate? delegate, Zone? zone}) {
     // coverage:ignore-start
     if (delegate != null && zone != null) {
       delegate.print(zone, message);
@@ -49,7 +54,8 @@ class ConsoleManager {
   /// [message] is the text to print.
   /// [label] is an optional label to print before the message.
   /// [delegate] and [zone] allow custom zone-based printing.
-  void prettyPrint(String message, {String? label, ZoneDelegate? delegate, Zone? zone}) {
+  void prettyPrint(String message,
+      {String? label, ZoneDelegate? delegate, Zone? zone}) {
     String divider = '-' * 80;
     // coverage:ignore-start
     if (delegate != null && zone != null) {

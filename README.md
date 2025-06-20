@@ -1,5 +1,7 @@
 # log_manager
 
+[![Flutter CI](https://github.com/thecasualdev17/log_manager/actions/workflows/flutter_ci.yml/badge.svg)](https://github.com/thecasualdev17/log_manager/actions/workflows/flutter_ci.yml)
+
 A lightweight and flexible logging utility for Dart and Flutter projects.
 
 `log_manager` helps you manage, filter, and output logs efficiently during development and

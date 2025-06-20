@@ -21,6 +21,7 @@ void main() {
   });
 
   test('test with print stack', () {
-    expect(() => consoleManager.printStack(stackTrace: StackTrace.current), returnsNormally);
+    expect(() => consoleManager.printStack(stackTrace: StackTrace.current),
+        returnsNormally);
   });
 }

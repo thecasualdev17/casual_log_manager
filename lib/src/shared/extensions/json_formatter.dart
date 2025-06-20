@@ -24,13 +24,19 @@ extension JsonFormatter on Log {
   /// [jsonString] is the JSON-encoded string representing a log entry.
   /// Returns a [Log] object with the parsed data.
   static Log fromJsonString(String jsonString) {
-    final jsonMap = jsonString.isNotEmpty ? Map<String, dynamic>.from(json.decode(jsonString)) : {};
+    final jsonMap = jsonString.isNotEmpty
+        ? Map<String, dynamic>.from(json.decode(jsonString))
+        : {};
 
     return Log(
       message: jsonMap['message'] ?? '',
-      timestamp: DateTime.parse(jsonMap['timestamp'] ?? DateTime.now().toIso8601String()),
+      timestamp: DateTime.parse(
+        jsonMap['timestamp'] ?? DateTime.now().toIso8601String(),
+      ),
       label: jsonMap['label'],
-      stackTrace: jsonMap['stackTrace'] != null ? StackTrace.fromString(jsonMap['stackTrace']) : null,
+      stackTrace: jsonMap['stackTrace'] != null
+          ? StackTrace.fromString(jsonMap['stackTrace'])
+          : null,
       logLevel: jsonMap['logLevel'],
     );
   }

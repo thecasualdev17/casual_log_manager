@@ -4,7 +4,13 @@ import 'package:log_manager/src/core/log_manager_core.dart';
 
 void main() {
   test('LogManagerCore initialization test', () {
-    final options = Options(preventCrashes: true);
+    final options = Options(
+      preventCrashes: true,
+      prettyPrint: true,
+      logToConsole: true,
+      logToNetwork: true,
+      logToFile: true,
+    );
     final fileOptions = FileOptions();
     final networkOptions = NetworkOptions(networkUrl: 'sample.com');
     final logLabel = 'TestLog';
@@ -21,7 +27,7 @@ void main() {
   });
 
   test('LogManagerCore without crash prevention', () {
-    final options = Options(preventCrashes: false);
+    final options = Options(preventCrashes: true);
     final fileOptions = FileOptions();
     final networkOptions = NetworkOptions(networkUrl: 'sample.com');
     final logLabel = 'TestLog';
@@ -78,7 +84,11 @@ void main() {
     final core = LogManagerCore();
     final options = Options(preventCrashes: true);
 
-    await core.catchUnhandledExceptions(Exception('error'), StackTrace.current, options);
+    await core.catchUnhandledExceptions(
+      Exception('error'),
+      StackTrace.current,
+      options,
+    );
   });
 
   group('LogManager singleton', () {
@@ -120,7 +130,8 @@ void main() {
       );
     });
 
-    test('LogManager.getLogManagerIO returns LogManagerIO instance after init', () {
+    test('LogManager.getLogManagerIO returns LogManagerIO instance after init',
+        () {
       final logManager = LogManager();
       logManager.init(
         onAppStart: () {},

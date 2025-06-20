@@ -5,7 +5,10 @@ import 'package:log_manager/log_manager.dart';
 
 final baseSeedColor = const Color.fromARGB(255, 57, 185, 127);
 final lightColorScheme = ColorScheme.fromSeed(seedColor: baseSeedColor);
-final darkColorScheme = ColorScheme.fromSeed(seedColor: baseSeedColor, brightness: Brightness.dark);
+final darkColorScheme = ColorScheme.fromSeed(
+  seedColor: baseSeedColor,
+  brightness: Brightness.dark,
+);
 
 int counter = 0;
 
@@ -23,7 +26,8 @@ void main() {
       prettyPrint: true,
       logToConsole: true, //
     ),
-    networkOptions: const NetworkOptions(networkUrl: 'https://example.com/logs/'),
+    networkOptions:
+        const NetworkOptions(networkUrl: 'https://example.com/logs/'),
   );
 }
 
@@ -58,7 +62,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void onLogExample() {
     // This is where you would log a message using log utils or logging package.
-    LogManager.log('This is an example log statement.', logLevel: LogLevel.INFO, label: 'example');
+    LogManager.log('This is an example log statement.',
+        logLevel: LogLevel.INFO, label: 'example');
   }
 
   void onExceptionExample() {
@@ -66,7 +71,8 @@ class _MyHomePageState extends State<MyHomePage> {
       throw Exception('This is an example exception.');
     } catch (e, stackTrace) {
       // This is where you would log the exception using log utils or logging package.
-      LogManager.logWithStack('Caught an exception: $e', stacktrace: stackTrace);
+      LogManager.logWithStack('Caught an exception: $e',
+          stacktrace: stackTrace);
 
       // Or you can use a normal print statement
       //print('Stack trace:\n$stackTrace');
@@ -81,7 +87,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.inversePrimary, title: Text(widget.title)),
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -113,8 +122,9 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text('Example Exception without Try/Catch'),
             ),
             SizedBox(height: 20),
-            TextButton(onPressed: () {}, child: Text('Show latest log')),
-            TextButton(onPressed: () {}, child: Text('Get log file')),
+            // TODO: Uncomment these buttons when the respective features are implemented
+            // TextButton(onPressed: () {}, child: Text('Show latest log')),
+            // TextButton(onPressed: () {}, child: Text('Get log file')),
           ],
         ),
       ),

@@ -49,7 +49,8 @@ class NetworkManager {
   /// [networkUrl] is the endpoint to which the log is sent.
   /// [body] is the log entry to send.
   /// Returns true if the request is successful, false otherwise.
-  Future<bool> sendLog({required String networkUrl, required Map<String, String> body}) async {
+  Future<bool> sendLog(
+      {required String networkUrl, required Map<String, String> body}) async {
     assert(networkUrl.isNotEmpty, 'Network Url must be provided');
     try {
       final response = await dio.request(

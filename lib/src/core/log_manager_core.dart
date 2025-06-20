@@ -38,7 +38,7 @@ class LogManagerCore {
         // coverage:ignore-start
         (error, stack) => catchUnhandledExceptions(error, stack, options),
         // coverage:ignore-end
-        zoneSpecification: ZoneSpecs.defaultZoneSpecification(options: options), // Use the default zone specification
+        zoneSpecification: ZoneSpecs.defaultZoneSpecification(options: options),
       );
     } else {
       runZoned(() {

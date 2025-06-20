@@ -93,20 +93,20 @@ class FileManager extends FileManagerBase {
   @override
 
   /// Initializes the file manager with required directories and file extension.
-  void initialize({
+  Future<void> initialize({
     required String logDirectory,
     required String archiveDirectory,
     required String networkDirectory,
     required String extension,
-  }) {
+  }) async {
     this.logDirectory = logDirectory;
     this.archiveDirectory = archiveDirectory;
     this.networkDirectory = networkDirectory;
     this.extension = extension;
 
-    createLogDirectory();
-    createLogArchiveDirectory();
-    createNetworkDirectory();
+    await createLogDirectory();
+    await createLogArchiveDirectory();
+    await createNetworkDirectory();
   }
 
   @override
@@ -232,7 +232,8 @@ class FileManager extends FileManagerBase {
   @override
 
   /// Appends [content] to a log file with the given [fileName].
-  Future<bool> appendToLogFile({required String fileName, required String content}) async {
+  Future<bool> appendToLogFile(
+      {required String fileName, required String content}) async {
     final file = File('$logDirectory/$fileName.$extension');
     if (await file.exists()) {
       try {
@@ -250,7 +251,11 @@ class FileManager extends FileManagerBase {
   @override
 
   /// Marks a log entry in a file with the given [fileName], [timestamp], and [mark].
-  Future<bool> markLogEntry({required String fileName, required String timestamp, required String mark}) async {
+  Future<bool> markLogEntry({
+    required String fileName,
+    required String timestamp,
+    required String mark,
+  }) async {
     final file = File('$logDirectory/$fileName.$extension');
     if (await file.exists()) {
       try {
@@ -294,7 +299,8 @@ class FileManager extends FileManagerBase {
   @override
 
   /// Appends [content] to a network log file with the given [fileName].
-  Future<bool> appendToNetworkLogFile({required String fileName, required String content}) async {
+  Future<bool> appendToNetworkLogFile(
+      {required String fileName, required String content}) async {
     final file = File('$networkDirectory/$fileName.$extension');
     if (await file.exists()) {
       try {
@@ -361,7 +367,8 @@ class FileManager extends FileManagerBase {
     final file = File('$logDirectory/$fileName.$extension');
     return file.exists().then((exists) async {
       if (exists) {
-        final age = DateTime.now().difference(await file.lastModified()).inSeconds;
+        final age =
+            DateTime.now().difference(await file.lastModified()).inSeconds;
         return Future.value(age);
       }
       return Future.value(0);
