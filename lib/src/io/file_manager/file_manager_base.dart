@@ -9,7 +9,7 @@ abstract class FileManagerBase {
   /// [archiveDirectory] is the directory for archived logs.
   /// [networkDirectory] is the directory for network logs.
   /// [extension] is the file extension for log files.
-  void initialize({
+  Future<void> initialize({
     required String logDirectory,
     required String archiveDirectory,
     required String networkDirectory,

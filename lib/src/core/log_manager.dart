@@ -82,7 +82,11 @@ class LogManager {
   /// LogManager.log('This is a warning message', logLevel: LogLevel.WARNING);
   /// LogManager.log('This is an error message', logLevel: LogLevel.ERROR, label: 'error_logger');
   /// Note: Ensure that LogManager is initialized before calling this method.
-  static void log(String message, {LogLevel logLevel = LogLevel.INFO, String label = 'log_manager'}) {
+  static void log(
+    String message, {
+    LogLevel logLevel = LogLevel.INFO,
+    String label = 'log_manager',
+  }) {
     Level level = logLevel.toLevel();
     final log = Logger(label);
     log.log(level, message);
@@ -116,8 +120,12 @@ class LogManager {
   }) {
     final log = Logger(label);
     stacktrace ??= StackTrace.current;
-    assert(logManagerIO != null, 'LogManagerIO is not initialized. Please call LogManager.init() before logging.');
-    String formattedMessage = logManagerIO!.formatStackTrace(stacktrace, demangle: demangleStackTrace);
+    assert(
+      logManagerIO != null,
+      'LogManagerIO is not initialized. Please call LogManager.init() before logging.',
+    );
+    String formattedMessage = logManagerIO!
+        .formatStackTrace(stacktrace, demangle: demangleStackTrace);
     log.log(logLevel.toLevel(), '$message\n$formattedMessage');
   }
 

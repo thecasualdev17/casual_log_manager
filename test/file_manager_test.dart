@@ -20,6 +20,7 @@ void main() {
     );
     await fileManager.clearLogDirectory();
     await fileManager.clearArchiveDirectory();
+    await fileManager.createNetworkDirectory();
   });
 
   tearDown(() async {
@@ -29,7 +30,7 @@ void main() {
   });
 
   test('creates log directory', () async {
-    final result = await fileManager.createLogDirectory();
+    await fileManager.createLogDirectory();
     expect(await Directory(logDir).exists(), isTrue);
   });
 
