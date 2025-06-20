@@ -1,4 +1,4 @@
-import 'package:log_manager/log_manager.dart';
+import 'package:casual_log_manager/casual_log_manager.dart';
 
 /// Configuration options for file-based logging.
 class FileOptions {

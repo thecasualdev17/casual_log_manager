@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:log_manager/src/io/console_manager/console_manager.dart';
+import 'package:casual_log_manager/src/io/console_manager/console_manager.dart';
 
 void main() {
   ConsoleManager consoleManager = ConsoleManager();

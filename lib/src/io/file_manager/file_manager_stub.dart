@@ -1,4 +1,4 @@
-import 'package:log_manager/src/io/file_manager/file_manager_base.dart';
+import 'package:casual_log_manager/src/io/file_manager/file_manager_base.dart';
 
 /// A stub implementation of [FileManagerBase] for platforms where file operations are not supported.
 class FileManager extends FileManagerBase {

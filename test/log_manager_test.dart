@@ -1,6 +1,6 @@
+import 'package:casual_log_manager/casual_log_manager.dart';
+import 'package:casual_log_manager/src/core/log_manager_core.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:log_manager/log_manager.dart';
-import 'package:log_manager/src/core/log_manager_core.dart';
 
 void main() {
   test('LogManagerCore initialization test', () {

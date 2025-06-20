@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:casual_log_manager/casual_log_manager.dart';
+import 'package:casual_log_manager/src/io/log_manager_io.dart';
+import 'package:casual_log_manager/src/shared/zone_specs.dart';
 import 'package:flutter/widgets.dart';
-import 'package:log_manager/log_manager.dart';
-import 'package:log_manager/src/io/log_manager_io.dart';
-import 'package:log_manager/src/shared/zone_specs.dart';
 
 /// Core logic for the LogManager, handling initialization and unhandled exceptions.
 /// This class is responsible for setting up the LogManagerIO instance and managing the application's logging behavior.
@@ -16,7 +16,7 @@ class LogManagerCore {
   /// [fileOptions] configures file logging.
   /// [networkOptions] configures network logging.
   /// [logLabel] is a label for log identification.
-  initLogManagerCore({
+  void initLogManagerCore({
     required Function onAppStart,
     required Options options,
     required FileOptions fileOptions,

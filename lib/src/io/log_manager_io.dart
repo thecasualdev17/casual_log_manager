@@ -1,10 +1,9 @@
 import 'dart:async';
 
+import 'package:casual_log_manager/casual_log_manager.dart';
+import 'package:casual_log_manager/src/io/network_manager/network_manager.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/foundation.dart';
-import 'package:log_manager/log_manager.dart';
-import 'package:log_manager/src/io/network_manager/network_manager.dart';
-import 'package:log_manager/src/shared/extensions/level_converter.dart';
 import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:stack_trace/stack_trace.dart';

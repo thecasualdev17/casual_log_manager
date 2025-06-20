@@ -1,6 +1,6 @@
 // coverage:ignore-file
 
-import 'package:log_manager/log_manager.dart';
+import 'package:casual_log_manager/casual_log_manager.dart';
 import 'package:logging/logging.dart';
 
 /// Extension to convert between [LogLevel] and [Level] enums.

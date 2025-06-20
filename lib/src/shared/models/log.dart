@@ -1,4 +1,4 @@
-import 'package:log_manager/log_manager.dart';
+import 'package:casual_log_manager/casual_log_manager.dart';
 
 /// A model representing a log entry with various attributes.
 /// This class encapsulates the details of a log entry, including the message,
