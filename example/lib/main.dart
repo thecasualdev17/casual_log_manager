@@ -3,6 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:log_manager/log_manager.dart';
 
+final baseSeedColor = const Color.fromARGB(255, 57, 185, 127);
+final lightColorScheme = ColorScheme.fromSeed(seedColor: baseSeedColor);
+final darkColorScheme = ColorScheme.fromSeed(seedColor: baseSeedColor, brightness: Brightness.dark);
+
 int counter = 0;
 
 void main() {
@@ -11,7 +15,15 @@ void main() {
       // This is where you would initialize your app or perform any startup tasks.
       runApp(const MyApp());
     },
-    options: Options(preventCrashes: true, logToFile: true),
+    label: 'log label example app',
+    options: Options(
+      preventCrashes: true,
+      logToFile: true,
+      logToNetwork: true,
+      prettyPrint: true,
+      logToConsole: true, //
+    ),
+    networkOptions: const NetworkOptions(networkUrl: 'https://example.com/logs/'),
   );
 }
 
@@ -22,7 +34,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Log Manager Demo',
-      theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 57, 185, 127))),
+      theme: ThemeData(colorScheme: lightColorScheme),
+      darkTheme: ThemeData(colorScheme: darkColorScheme),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -45,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void onLogExample() {
     // This is where you would log a message using log utils or logging package.
-    LogManager.log('This is an example log statement.', logLevel: LogLevel.INFO, identifier: 'example');
+    LogManager.log('This is an example log statement.', logLevel: LogLevel.INFO, label: 'example');
   }
 
   void onExceptionExample() {
@@ -56,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
       LogManager.logWithStack('Caught an exception: $e', stacktrace: stackTrace);
 
       // Or you can use a normal print statement
-      print('Stack trace: $stackTrace');
+      //print('Stack trace:\n$stackTrace');
     }
   }
 
@@ -67,12 +80,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    LogManager.setOnLogCreated((String message) {
-      setState(() {
-        counter++;
-      });
-    });
-
     return Scaffold(
       appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.inversePrimary, title: Text(widget.title)),
       body: Center(
@@ -105,6 +112,9 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               child: Text('Example Exception without Try/Catch'),
             ),
+            SizedBox(height: 20),
+            TextButton(onPressed: () {}, child: Text('Show latest log')),
+            TextButton(onPressed: () {}, child: Text('Get log file')),
           ],
         ),
       ),
