@@ -336,6 +336,7 @@ class LogManagerIO {
         break;
       case LogGroups.weekly:
         baseFileName += '${(now.day ~/ 8) + 1}';
+        break;
       case LogGroups.biWeekly:
         baseFileName += '${(now.day ~/ 16) + 1}';
         break;

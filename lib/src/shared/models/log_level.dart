@@ -37,4 +37,12 @@ class LogLevel implements Comparable<LogLevel> {
 
   @override
   int compareTo(LogLevel other) => value - other.value;
+
+  /// Returns LogLevel from a string representation.
+  static LogLevel fromString(String level) {
+    return LOG_LEVELS.firstWhere(
+      (logLevel) => logLevel.name.toUpperCase() == level.toUpperCase(),
+      orElse: () => INFO,
+    );
+  }
 }

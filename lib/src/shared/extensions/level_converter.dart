@@ -56,7 +56,9 @@ extension LogLevelConverter on Level {
         return LogLevel.ALL;
       case Level.INFO || Level.CONFIG:
         return LogLevel.INFO;
-      case Level.SEVERE || Level.SHOUT:
+      case Level.SEVERE:
+        return LogLevel.ERROR;
+      case Level.SHOUT:
         return LogLevel.ERROR;
       case Level.WARNING:
         return LogLevel.WARNING;

@@ -1,3 +1,5 @@
+import 'package:log_manager/log_manager.dart';
+
 /// A model representing a log entry with various attributes.
 /// This class encapsulates the details of a log entry, including the message,
 /// log level, timestamp, label, stack trace, and a flag indicating if the log is marked.
@@ -12,7 +14,7 @@ class Log {
   Log({
     required this.message,
     required this.timestamp,
-    this.logLevel = 'INFO',
+    this.logLevel = LogLevel.INFO,
     this.label,
     this.stackTrace,
   });
@@ -21,7 +23,7 @@ class Log {
   final String message;
 
   /// [logLevel] indicates the severity or type of the log entry (e.g., INFO, ERROR).
-  final String logLevel;
+  final LogLevel logLevel;
 
   /// [timestamp] is the date and time when the log entry was created.
   final DateTime timestamp;
