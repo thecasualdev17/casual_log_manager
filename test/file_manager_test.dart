@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:log_manager/src/io/file_manager/file_manager_io.dart';
+import 'package:casual_log_manager/src/io/file_manager/file_manager_io.dart';
 import 'package:test/test.dart';
 
 void main() {

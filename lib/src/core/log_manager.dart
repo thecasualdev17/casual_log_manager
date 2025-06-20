@@ -1,12 +1,8 @@
-import 'package:log_manager/src/core/log_manager_core.dart';
-import 'package:log_manager/src/shared/extensions/level_converter.dart';
-import 'package:log_manager/src/shared/models/file_options.dart';
-import 'package:log_manager/src/shared/models/log_level.dart';
-import 'package:log_manager/src/shared/models/network_options.dart';
-import 'package:log_manager/src/shared/models/options.dart';
+import 'package:casual_log_manager/casual_log_manager.dart';
 import 'package:logging/logging.dart';
 
 import '../io/log_manager_io.dart';
+import 'log_manager_core.dart';
 
 /// Singleton class for managing application logging and error handling.
 ///

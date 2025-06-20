@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:log_manager/log_manager.dart';
+import 'package:casual_log_manager/casual_log_manager.dart';
 
 /// Provides custom [ZoneSpecification]s for logging and error handling.
 abstract class ZoneSpecs {

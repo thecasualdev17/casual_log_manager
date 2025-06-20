@@ -1,4 +1,5 @@
-import 'package:log_manager/src/shared/utils/message_formatter.dart' as mf;
+import 'package:casual_log_manager/src/shared/utils/message_formatter.dart'
+    as mf;
 
 /// Configuration options for network-based logging.
 class NetworkOptions {

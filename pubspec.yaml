@@ -1,7 +1,12 @@
-name: log_manager
+name: casual_log_manager
 description: "A simple dart package for application error and log management."
 version: 0.1.0
-repository: https://github.com/thecasualdev17/log_manager.git
+repository: https://github.com/thecasualdev17/casual_log_manager.git
+issue_tracker: https://github.com/thecasualdev17/casual_log_manager/issues
+
+topics:
+  - debugging
+  - logging
 
 environment:
   sdk: '>=3.0.0 <4.0.0'

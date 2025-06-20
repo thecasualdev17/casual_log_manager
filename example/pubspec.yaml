@@ -1,5 +1,5 @@
 name: example
-description: "Example project for log_manager"
+description: "Example project for casual_log_manager"
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
@@ -11,8 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  log_manager:
-    path: ../../log_manager
+  casual_log_manager:
+    path: ../../casual_log_manager
 
 dev_dependencies:
   flutter_test:

@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:developer' as developer;
 
+import 'package:casual_log_manager/src/shared/extensions/http_status_checker.dart';
+import 'package:casual_log_manager/src/shared/models/network_options.dart';
 import 'package:dio/dio.dart';
-import 'package:log_manager/src/shared/extensions/http_status_checker.dart';
-import 'package:log_manager/src/shared/models/network_options.dart';
 
 /// NetworkManager is responsible for sending logs to a remote server
 class NetworkManager {

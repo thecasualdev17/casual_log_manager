@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print
 
+import 'package:casual_log_manager/casual_log_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:log_manager/log_manager.dart';
 
 final baseSeedColor = const Color.fromARGB(255, 57, 185, 127);
 final lightColorScheme = ColorScheme.fromSeed(seedColor: baseSeedColor);

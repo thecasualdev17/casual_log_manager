@@ -1,6 +1,7 @@
 export 'src/core/log_manager.dart';
 export 'src/shared/enums/log_formats.dart';
 export 'src/shared/enums/log_groups.dart';
+export 'src/shared/extensions/level_converter.dart';
 export 'src/shared/models/file_options.dart';
 export 'src/shared/models/log_level.dart';
 export 'src/shared/models/network_options.dart';

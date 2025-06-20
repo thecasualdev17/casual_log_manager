@@ -1,10 +1,10 @@
-# log_manager
+# casual_log_manager
 
-[![Flutter CI](https://github.com/thecasualdev17/log_manager/actions/workflows/flutter_ci.yml/badge.svg)](https://github.com/thecasualdev17/log_manager/actions/workflows/flutter_ci.yml)
+[![Flutter CI](https://github.com/thecasualdev17/casual_log_manager/actions/workflows/flutter_ci.yml/badge.svg)](https://github.com/thecasualdev17/casual_log_manager/actions/workflows/flutter_ci.yml)
 
 A lightweight and flexible logging utility for Dart and Flutter projects.
 
-`log_manager` helps you manage, filter, and output logs efficiently during development and
+`casual_log_manager` helps you manage, filter, and output logs efficiently during development and
 production. It provides convenient wrappers and implementations on top of the popular [
 `logging`](https://pub.dev/packages/logging) package.
 
@@ -24,7 +24,7 @@ production. It provides convenient wrappers and implementations on top of the po
 Import and use the logger in your Dart or Flutter project:
 
 ```dart
-import 'package:log_manager/log_manager.dart';
+import 'package:casual_log_manager/casual_log_manager.dart';
 
 void main() {
   LogManager().init(
