@@ -11,9 +11,9 @@ dependencies:
   flutter:
     sdk: flutter
   dio: ^5.8.0+1
-  logging: ">=1.1.1"
-  path_provider: ">=2.1.0"
-  stack_trace: ">=1.11.1"
+  logging: ">=1.1.1 <2.0.0"
+  path_provider: ">=2.1.0 <3.0.0"
+  stack_trace: ">=1.11.1 <=1.12.1"
   neat_periodic_task: ^2.0.1
 
 dev_dependencies:
