@@ -15,7 +15,15 @@ void main() {
       // This is where you would initialize your app or perform any startup tasks.
       runApp(const MyApp());
     },
-    options: Options(preventCrashes: true, logToFile: true),
+    label: 'log label example app',
+    options: Options(
+      preventCrashes: true,
+      logToFile: true,
+      logToNetwork: true,
+      prettyPrint: true,
+      logToConsole: true, //
+    ),
+    networkOptions: const NetworkOptions(networkUrl: 'https://example.com/logs/'),
   );
 }
 
@@ -50,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void onLogExample() {
     // This is where you would log a message using log utils or logging package.
-    LogManager.log('This is an example log statement.', logLevel: LogLevel.INFO, identifier: 'example');
+    LogManager.log('This is an example log statement.', logLevel: LogLevel.INFO, label: 'example');
   }
 
   void onExceptionExample() {
@@ -72,12 +80,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    LogManager.setOnLogCreated((String message) {
-      setState(() {
-        counter++;
-      });
-    });
-
     return Scaffold(
       appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.inversePrimary, title: Text(widget.title)),
       body: Center(

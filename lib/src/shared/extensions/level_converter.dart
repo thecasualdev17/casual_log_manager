@@ -1,7 +1,11 @@
+// coverage:ignore-file
+
 import 'package:log_manager/log_manager.dart';
 import 'package:logging/logging.dart';
 
+/// Extension to convert between [LogLevel] and [Level] enums.
 extension LevelConverter on LogLevel {
+  /// Converts a [Level] from the logging package to a [LogLevel].
   static LogLevel fromLevel(Level level) {
     switch (level) {
       case Level.ALL:
@@ -19,6 +23,7 @@ extension LevelConverter on LogLevel {
     }
   }
 
+  /// Converts this [LogLevel] to a [Level] from the logging package.
   Level toLevel() {
     Level level = Level.ALL;
     switch (this) {
@@ -42,7 +47,9 @@ extension LevelConverter on LogLevel {
   }
 }
 
+/// Extension to convert between [Level] and [LogLevel].
 extension LogLevelConverter on Level {
+  /// Converts a [LogLevel] to a [Level] from the logging package.
   LogLevel toLogLevel() {
     switch (this) {
       case Level.ALL:
@@ -60,6 +67,7 @@ extension LogLevelConverter on Level {
     }
   }
 
+  /// Converts a [LogLevel] to a [Level] from the logging package.
   static Level fromLogLevel(LogLevel logLevel) {
     switch (logLevel) {
       case LogLevel.ALL:

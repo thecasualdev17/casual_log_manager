@@ -1,5 +1,6 @@
 import 'package:log_manager/src/io/file_manager/file_manager_base.dart';
 
+/// A web implementation of [FileManagerBase] for platforms where file operations are not supported.
 class FileManager extends FileManagerBase {
   @override
   Future<bool> appendToLogFile({required String fileName, required String content}) {
@@ -51,6 +52,7 @@ class FileManager extends FileManagerBase {
     required String logDirectory,
     required String archiveDirectory,
     required String extension,
+    required String networkDirectory,
   }) {
     throw UnimplementedError('initialize is not implemented for this platform.');
   }
@@ -93,5 +95,45 @@ class FileManager extends FileManagerBase {
   @override
   Future<int> getFileSize({required String fileName}) {
     throw UnimplementedError('getFileSize is not implemented for this platform.');
+  }
+
+  @override
+  Future<bool> appendToNetworkLogFile({required String fileName, required String content}) {
+    throw UnimplementedError('appendToNetworkLogFile is not implemented for this platform');
+  }
+
+  @override
+  Future<bool> createNetworkLogFile({required String fileName}) {
+    throw UnimplementedError('createNetworkLogFile is not implemented for this platform');
+  }
+
+  @override
+  Future<bool> deleteNetworkLogFile({required String fileName}) {
+    throw UnimplementedError('deleteNetworkLogFile is not implemented for this platform');
+  }
+
+  @override
+  Future<bool> networkLogDirectoryExists() {
+    throw UnimplementedError('networkLogDirectoryExists is not implemented for this platform');
+  }
+
+  @override
+  Future<bool> networkLogFileExists({required String fileName}) {
+    throw UnimplementedError('networkLogFileExists is not implemented for this platform');
+  }
+
+  @override
+  Future<List<String>> readNetworkLogFile({required String fileName}) {
+    throw UnimplementedError('readNetworkLogFile is not implemented for this platform');
+  }
+
+  @override
+  Future<bool> createNetworkDirectory() {
+    throw UnimplementedError('createNetworkDirectory is not implemented for this platform');
+  }
+
+  @override
+  Future<int> getFileAge({required String fileName}) {
+    throw UnimplementedError('getFileAge is not implemented for this platform.');
   }
 }

@@ -17,9 +17,18 @@ class Log {
     this.stackTrace,
   });
 
+  /// [message] is the content of the log entry.
   final String message;
+
+  /// [logLevel] indicates the severity or type of the log entry (e.g., INFO, ERROR).
   final String logLevel;
+
+  /// [timestamp] is the date and time when the log entry was created.
   final DateTime timestamp;
+
+  /// [label] is an optional identifier for the log entry, useful for categorization.
   final String? label;
+
+  /// [stackTrace] is an optional stack trace associated with the log entry,
   final StackTrace? stackTrace;
 }

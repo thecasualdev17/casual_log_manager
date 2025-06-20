@@ -5,50 +5,84 @@ import 'package:log_manager/log_manager.dart';
 import 'package:log_manager/src/io/log_manager_io.dart';
 import 'package:log_manager/src/shared/zone_specs.dart';
 
+/// Core logic for the LogManager, handling initialization and unhandled exceptions.
+/// This class is responsible for setting up the LogManagerIO instance and managing the application's logging behavior.
+/// It provides methods to initialize the logging system, catch unhandled exceptions, and configure logging options.
 class LogManagerCore {
+  /// Initializes the LogManager core logic.
+  ///
+  /// [onAppStart] is called after log manager initialization.
+  /// [options] provides configuration for logging behavior.
+  /// [fileOptions] configures file logging.
+  /// [networkOptions] configures network logging.
+  /// [logLabel] is a label for log identification.
   initLogManagerCore({
     required Function onAppStart,
-    Function(String message)? onLogCreated,
     required Options options,
     required FileOptions fileOptions,
     required NetworkOptions networkOptions,
+    required String logLabel,
   }) {
     if (options.preventCrashes) {
       runZonedGuarded(
         () {
           WidgetsFlutterBinding.ensureInitialized();
-          initLogManagerIO(options, fileOptions, networkOptions);
+          initLogManagerIO(
+            options: options,
+            fileOptions: fileOptions,
+            networkOptions: networkOptions,
+            logLabel: logLabel,
+          );
           onAppStart();
         },
-        (error, stack) => catchUnhandledExceptions(error, stack, options, onLogCreated),
+        // coverage:ignore-start
+        (error, stack) => catchUnhandledExceptions(error, stack, options),
+        // coverage:ignore-end
         zoneSpecification: ZoneSpecs.defaultZoneSpecification(options: options), // Use the default zone specification
       );
     } else {
       runZoned(() {
         WidgetsFlutterBinding.ensureInitialized();
-        initLogManagerIO(options, fileOptions, networkOptions);
+        initLogManagerIO(
+          options: options,
+          fileOptions: fileOptions,
+          networkOptions: networkOptions,
+          logLabel: logLabel,
+        );
         onAppStart();
       });
     }
   }
 
-  void initLogManagerIO(
-    Options options,
-    FileOptions fileOptions,
-    NetworkOptions networkOptions,
-  ) {
+  /// Initializes the LogManagerIO instance with the provided options.
+  ///
+  /// [options] provides configuration for logging behavior.
+  /// [fileOptions] configures file logging.
+  /// [networkOptions] configures network logging.
+  /// [logLabel] is a label for log identification.
+  void initLogManagerIO({
+    required Options options,
+    required FileOptions fileOptions,
+    required NetworkOptions networkOptions,
+    required String logLabel,
+  }) {
     LogManager.logManagerIO = LogManagerIO(
       options: options,
       fileOptions: fileOptions,
       networkOptions: networkOptions,
+      logLabel: logLabel,
     );
   }
 
+  /// Handles uncaught exceptions in the application.
+  ///
+  /// [error] is the uncaught error object.
+  /// [stack] is the associated stack trace.
+  /// [options] provides configuration for logging behavior.
   Future<void> catchUnhandledExceptions(
     Object error,
     StackTrace? stack,
     Options options,
-    Function(String message)? onLogCreated,
   ) async {
     // this part is somehow not needed but is required by runZoneGuarded
   }
