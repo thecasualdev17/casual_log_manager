@@ -16,3 +16,10 @@
 ## 0.2.1
 
 - Added ensureInitialized parameter in `init`
+
+## 0.2.2
+
+- Enhanced error handling and assertions in logging methods.
+- Minor internal refactoring and code cleanup.
+- Added base log level for `print` method to make sure prints from libraries are not logged
+  accidentally.

@@ -14,7 +14,12 @@ abstract class ZoneSpecs {
   }) {
     return ZoneSpecification(
       print: (self, parent, zone, message) async {
-        LogManager.getLogManagerIO()?.createLog(message, options: options);
+        LogManager.getLogManagerIO()?.createLog(
+          message,
+          options: options,
+          logLevel: options.logLevelForPrint,
+          label: LogManager.logLabel,
+        );
       },
     );
   }

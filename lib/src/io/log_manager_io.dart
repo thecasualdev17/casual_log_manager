@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer' as developer;
 
 import 'package:casual_log_manager/casual_log_manager.dart';
 import 'package:casual_log_manager/src/io/network_manager/network_manager.dart';
@@ -22,7 +23,6 @@ class LogManagerIO {
     required this.options,
     required this.fileOptions,
     required this.networkOptions,
-    required this.logLabel,
   });
 
   /// General logging options.
@@ -35,7 +35,6 @@ class LogManagerIO {
   final NetworkOptions networkOptions;
 
   /// Default label for logs.
-  final String logLabel;
   late FileManager _fileManager;
   late ConsoleManager _consoleManager;
   late NetworkManager _networkManager;
@@ -64,6 +63,7 @@ class LogManagerIO {
       logLevel: LogLevel.ERROR,
       stacktrace: stack,
       options: options,
+      label: LogManager.logLabel,
     );
   }
 
@@ -90,7 +90,7 @@ class LogManagerIO {
 
   /// Initializes a periodic scheduler for sending network logs.
   Future<void> initScheduler() async {
-    Timer.periodic(Duration(seconds: 15), (Timer t) async {
+    Timer.periodic(networkOptions.sendLoopDelay, (Timer t) async {
       await sendNetworkLogs();
     });
   }
@@ -132,6 +132,7 @@ class LogManagerIO {
         logLevel: record.level.toLogLevel(),
         stacktrace: record.stackTrace,
         options: options,
+        label: LogManager.logLabel,
       );
     });
   }
@@ -145,7 +146,7 @@ class LogManagerIO {
   /// [stacktrace] - Optional stack trace to include.
   Future<void> createLog(
     String logMessage, {
-    String? label,
+    required String label,
     LogLevel logLevel = LogLevel.INFO,
     Options options = const Options(),
     StackTrace? stacktrace,
@@ -258,22 +259,29 @@ class LogManagerIO {
 
   /// Extracts the network log body from a string.
   Map<String, String> extractNetworkBodyFromString(String e) {
-    List<String> logs = e.split(options.logDelimiter);
-    if (networkOptions.networkBodyFormatter != null) {
-      return networkOptions.networkBodyFormatter!(
-        timestamp: logs[0].trim(),
-        level: logs[1].trim(),
-        label: logs[2].trim(),
-        message: logs[3].trim(),
-      );
-    }
+    try {
+      List<String> logs = e.split(options.logDelimiter);
+      if (networkOptions.networkBodyFormatter != null) {
+        return networkOptions.networkBodyFormatter!(
+          timestamp: logs[0].trim(),
+          level: logs[1].trim(),
+          label: logs[2].trim(),
+          message: logs[3].trim(),
+          stackTrace: (logs.length > 4) ? logs[4].trim() : null,
+        );
+      }
 
-    return {
-      'timestamp': logs[0].trim(),
-      'level': logs[1].trim(),
-      'label': logs[2].trim(),
-      'message': logs[3].trim(),
-    };
+      return {
+        'timestamp': logs[0].trim(),
+        'level': logs[1].trim(),
+        'label': logs[2].trim(),
+        'message': logs[3].trim(),
+        if (logs.length > 4) 'stackTrace': logs[4].trim(),
+      };
+    } catch (e) {
+      developer.log('Error extracting network body: $e');
+      return {};
+    }
   }
 
   /// Formats log content for network transmission.
@@ -330,7 +338,7 @@ class LogManagerIO {
     if (stack.isNotEmpty) {
       String stackTraceMsg =
           networkOptions.stackTraceFormatter?.call(stack, 'trace') ?? stack;
-      networkContent += ' $stackTraceMsg';
+      networkContent += '${options.logDelimiter}$stackTraceMsg';
     }
     return '$networkContent\n';
   }
@@ -343,7 +351,7 @@ class LogManagerIO {
   /// Formats the log message and stack trace into a single log content string.
   String createLogContent(
     String message, {
-    String? label,
+    required String label,
     LogLevel logLevel = LogLevel.INFO,
     StackTrace? stacktrace,
     bool demangleStackTrace = true,
@@ -353,7 +361,7 @@ class LogManagerIO {
     final timestamp = '${now.toIso8601String()} ${options.logDelimiter} ';
 
     String combinedMessage = addTimeStampOnEveryNewLine(
-      '${logLevel.name} ${options.logDelimiter} ${label ?? logLabel} ${options.logDelimiter} $message',
+      '${logLevel.name} ${options.logDelimiter} $label ${options.logDelimiter} $message',
       timestamp,
     );
     if (stacktrace != null) {

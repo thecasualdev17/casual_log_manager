@@ -47,12 +47,16 @@ class NetworkOptions {
   /// List of log levels that are filtered for network transmission.
   final List<LogLevel> filter;
 
+  /// Duration to wait between sending logs in a loop.
+  final Duration sendLoopDelay;
+
   /// Function to format the body of the network request.
   final Map<String, String> Function({
     required String timestamp,
     required String level,
     required String label,
     required String message,
+    String? stackTrace,
   })? networkBodyFormatter;
 
   /// Creates a [NetworkOptions] instance with the given configuration.
@@ -86,6 +90,7 @@ class NetworkOptions {
     this.stackTraceFormatter,
     this.stackTraceJoinString = '#',
     this.networkBodyFormatter,
+    this.sendLoopDelay = const Duration(seconds: 15),
     this.filter = const [
       LogLevel.INFO,
       LogLevel.WARNING,

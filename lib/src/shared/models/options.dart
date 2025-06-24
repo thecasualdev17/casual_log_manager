@@ -19,6 +19,7 @@ class Options {
     this.logToNetwork = false,
     this.demangleStackTrace = true,
     this.logDelimiter = '|',
+    this.logLevelForPrint = LogLevel.NONE,
     this.consoleFilter = const [
       LogLevel.INFO,
       LogLevel.WARNING,
@@ -50,4 +51,7 @@ class Options {
 
   /// List of log levels that are filtered for console logging.
   final List<LogLevel> consoleFilter;
+
+  /// The log level set for 'print' operations.
+  final LogLevel logLevelForPrint;
 }

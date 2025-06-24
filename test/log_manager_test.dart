@@ -20,7 +20,6 @@ void main() {
       options: options,
       fileOptions: fileOptions,
       networkOptions: networkOptions,
-      logLabel: logLabel,
     );
 
     expect(LogManager.logManagerIO, isNotNull);
@@ -37,7 +36,6 @@ void main() {
       options: options,
       fileOptions: fileOptions,
       networkOptions: networkOptions,
-      logLabel: logLabel,
     );
 
     expect(LogManager.logManagerIO, isNotNull);
@@ -54,7 +52,6 @@ void main() {
       options: options,
       fileOptions: fileOptions,
       networkOptions: networkOptions,
-      logLabel: logLabel,
     );
 
     expect(LogManager.logManagerIO, isNotNull);
@@ -79,7 +76,6 @@ void main() {
       options: options,
       fileOptions: fileOptions,
       networkOptions: networkOptions,
-      logLabel: logLabel,
       ensureInitialized: false,
     );
   });

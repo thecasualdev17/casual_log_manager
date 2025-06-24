@@ -21,7 +21,6 @@ class LogManagerCore {
     required Options options,
     required FileOptions fileOptions,
     required NetworkOptions networkOptions,
-    required String logLabel,
     bool ensureInitialized = false,
   }) {
     if (options.preventCrashes) {
@@ -34,7 +33,6 @@ class LogManagerCore {
             options: options,
             fileOptions: fileOptions,
             networkOptions: networkOptions,
-            logLabel: logLabel,
           );
           onAppStart();
         },
@@ -52,7 +50,6 @@ class LogManagerCore {
           options: options,
           fileOptions: fileOptions,
           networkOptions: networkOptions,
-          logLabel: logLabel,
         );
         onAppStart();
       });
@@ -69,13 +66,11 @@ class LogManagerCore {
     required Options options,
     required FileOptions fileOptions,
     required NetworkOptions networkOptions,
-    required String logLabel,
   }) async {
     LogManager.logManagerIO = LogManagerIO(
       options: options,
       fileOptions: fileOptions,
       networkOptions: networkOptions,
-      logLabel: logLabel,
     );
     await LogManager.logManagerIO?.init();
   }

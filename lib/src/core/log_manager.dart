@@ -33,6 +33,9 @@ class LogManager {
   /// Static instance of [LogManagerIO] for handling logging operations.
   static LogManagerIO? logManagerIO;
 
+  /// Default label for the log manager, used to identify logs.
+  static String logLabel = 'log_manager';
+
   /// Core instance for managing the log manager lifecycle.
   late LogManagerCore logManagerCore;
 
@@ -51,19 +54,19 @@ class LogManager {
   /// @return void
   void init({
     required Function onAppStart,
-    required String label,
+    String? label,
     Options options = const Options(),
     FileOptions fileOptions = const FileOptions(),
     NetworkOptions networkOptions = const NetworkOptions(networkUrl: ''),
     bool ensureInitialized = true,
   }) {
     logManagerCore = LogManagerCore();
+    logLabel = label ?? logLabel;
     logManagerCore.initLogManagerCore(
       onAppStart: onAppStart,
       options: options,
       fileOptions: fileOptions,
       networkOptions: networkOptions,
-      logLabel: label,
       ensureInitialized: ensureInitialized,
     );
   }
@@ -139,5 +142,11 @@ class LogManager {
   ///   Note: Ensure that LogManager is initialized before calling this method.
   static LogManagerIO? getLogManagerIO() {
     return logManagerIO;
+  }
+
+  /// Sets the label for the log manager.
+  /// enabled resetting the label for the log manager.
+  static void setLogLabel(String label) {
+    logLabel = label;
   }
 }
