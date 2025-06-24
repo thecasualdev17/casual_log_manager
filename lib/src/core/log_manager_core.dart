@@ -22,12 +22,15 @@ class LogManagerCore {
     required FileOptions fileOptions,
     required NetworkOptions networkOptions,
     required String logLabel,
+    bool ensureInitialized = false,
   }) {
     if (options.preventCrashes) {
       runZonedGuarded(
-        () {
-          WidgetsFlutterBinding.ensureInitialized();
-          initLogManagerIO(
+        () async {
+          if (ensureInitialized) {
+            WidgetsFlutterBinding.ensureInitialized();
+          }
+          await initLogManagerIO(
             options: options,
             fileOptions: fileOptions,
             networkOptions: networkOptions,
@@ -41,9 +44,11 @@ class LogManagerCore {
         zoneSpecification: ZoneSpecs.defaultZoneSpecification(options: options),
       );
     } else {
-      runZoned(() {
-        WidgetsFlutterBinding.ensureInitialized();
-        initLogManagerIO(
+      runZoned(() async {
+        if (ensureInitialized) {
+          WidgetsFlutterBinding.ensureInitialized();
+        }
+        await initLogManagerIO(
           options: options,
           fileOptions: fileOptions,
           networkOptions: networkOptions,
@@ -60,18 +65,19 @@ class LogManagerCore {
   /// [fileOptions] configures file logging.
   /// [networkOptions] configures network logging.
   /// [logLabel] is a label for log identification.
-  void initLogManagerIO({
+  Future<void> initLogManagerIO({
     required Options options,
     required FileOptions fileOptions,
     required NetworkOptions networkOptions,
     required String logLabel,
-  }) {
+  }) async {
     LogManager.logManagerIO = LogManagerIO(
       options: options,
       fileOptions: fileOptions,
       networkOptions: networkOptions,
       logLabel: logLabel,
     );
+    await LogManager.logManagerIO?.init();
   }
 
   /// Handles uncaught exceptions in the application.

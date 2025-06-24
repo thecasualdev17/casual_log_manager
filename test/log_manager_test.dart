@@ -61,7 +61,11 @@ void main() {
   });
 
   test('LogManagerCore calls onAppStart callback', () {
-    final options = Options(preventCrashes: true);
+    final options = Options(
+      preventCrashes: true,
+      logToFile: false,
+      logToNetwork: false,
+    );
     final fileOptions = FileOptions();
     final networkOptions = NetworkOptions(networkUrl: 'sample.com');
     final logLabel = 'TestLog';
@@ -70,14 +74,14 @@ void main() {
     LogManagerCore().initLogManagerCore(
       onAppStart: () {
         callbackCalled = true;
+        expect(callbackCalled, isTrue);
       },
       options: options,
       fileOptions: fileOptions,
       networkOptions: networkOptions,
       logLabel: logLabel,
+      ensureInitialized: false,
     );
-
-    expect(callbackCalled, isTrue);
   });
 
   test('LogManagerCore catchUnhandledExceptions does not throw', () async {

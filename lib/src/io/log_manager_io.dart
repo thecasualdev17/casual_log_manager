@@ -5,7 +5,6 @@ import 'package:casual_log_manager/src/io/network_manager/network_manager.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 import 'console_manager/console_manager.dart';
@@ -24,9 +23,7 @@ class LogManagerIO {
     required this.fileOptions,
     required this.networkOptions,
     required this.logLabel,
-  }) {
-    init();
-  }
+  });
 
   /// General logging options.
   final Options options;
@@ -39,7 +36,6 @@ class LogManagerIO {
 
   /// Default label for logs.
   final String logLabel;
-  String? _rootPath;
   late FileManager _fileManager;
   late ConsoleManager _consoleManager;
   late NetworkManager _networkManager;
@@ -80,10 +76,10 @@ class LogManagerIO {
 
   /// Initializes network logging and scheduler if enabled in options.
   Future<void> initNetworkLogs() async {
-    if (!options.logToFile) {
-      await initFileBaseLogs();
-    }
     if (options.logToNetwork) {
+      if (!options.logToFile) {
+        await initFileBaseLogs();
+      }
       _networkManager = NetworkManager(
         networkOptions: networkOptions,
         dio: dio.Dio(),
@@ -103,21 +99,17 @@ class LogManagerIO {
   Future<void> initFileBaseLogs() async {
     if (options.logToFile) {
       _fileManager = FileManager();
-      if (fileOptions.exposeLogs) {
-        _rootPath = (await getDownloadsDirectory())?.path;
-      } else {
-        _rootPath = (await getApplicationDocumentsDirectory()).path;
-      }
 
       await _fileManager.initialize(
-        logDirectory: '$_rootPath/logs',
-        archiveDirectory: '$_rootPath/archive',
+        logDirectory: '/logs',
+        archiveDirectory: '/archive',
         extension: fileOptions.fileExtension,
-        networkDirectory: '$_rootPath/network',
+        networkDirectory: '/network',
+        exposeLogs: fileOptions.exposeLogs,
       );
-    }
 
-    cleanOldLogsFromArchive();
+      cleanOldLogsFromArchive();
+    }
   }
 
   /// Deletes old logs from the archive directory based on the maximum log age.
@@ -170,15 +162,21 @@ class LogManagerIO {
     );
 
     if (options.logToConsole) {
-      await createConsoleBasedLog(logContent);
+      if (options.consoleFilter.contains(logLevel)) {
+        await createConsoleBasedLog(logContent);
+      }
     }
 
     if (options.logToFile) {
-      await createFileBasedLog(logContent);
+      if (fileOptions.filter.contains(logLevel)) {
+        await createFileBasedLog(logContent);
+      }
     }
 
     if (options.logToNetwork) {
-      await createNetworkLog(logContent, logDate);
+      if (networkOptions.filter.contains(logLevel)) {
+        await createNetworkLog(logContent, logDate);
+      }
     }
   }
 
@@ -223,16 +221,19 @@ class LogManagerIO {
     List<List<Map<String, String>>> requests = [];
     while (contents.isNotEmpty) {
       if (contents.length > networkOptions.maxLogsPerBatch) {
-        List<Map<String, String>> body = contents
-            .getRange(0, networkOptions.maxLogsPerBatch)
-            .map((String e) => {'body': e})
-            .toList();
+        List<Map<String, String>> body =
+            contents.getRange(0, networkOptions.maxLogsPerBatch).map(
+          (String e) {
+            return extractNetworkBodyFromString(e);
+          },
+        ).toList();
         requests.add(body);
         contents =
             contents.sublist(networkOptions.maxLogsPerBatch, contents.length);
       } else {
-        List<Map<String, String>> body =
-            contents.map((String e) => {'body': e}).toList();
+        List<Map<String, String>> body = contents.map((String e) {
+          return extractNetworkBodyFromString(e);
+        }).toList();
         contents.clear();
         requests.add(body);
       }
@@ -255,6 +256,26 @@ class LogManagerIO {
     }
   }
 
+  /// Extracts the network log body from a string.
+  Map<String, String> extractNetworkBodyFromString(String e) {
+    List<String> logs = e.split(options.logDelimiter);
+    if (networkOptions.networkBodyFormatter != null) {
+      return networkOptions.networkBodyFormatter!(
+        timestamp: logs[0].trim(),
+        level: logs[1].trim(),
+        label: logs[2].trim(),
+        message: logs[3].trim(),
+      );
+    }
+
+    return {
+      'timestamp': logs[0].trim(),
+      'level': logs[1].trim(),
+      'label': logs[2].trim(),
+      'message': logs[3].trim(),
+    };
+  }
+
   /// Formats log content for network transmission.
   String formatContentForNetwork(String content) {
     List<String> lines = content.split('\n');
@@ -270,24 +291,46 @@ class LogManagerIO {
       int counter = 0;
       for (var line in lines..removeAt(0)) {
         if (counter > networkOptions.maxFrames) break;
-        buffer.write(
-          '$counter${line.split(options.logDelimiter).last.replaceAll(RegExp(r"\s+"), ' ')}|',
-        );
-        counter++;
+        if (line.isNotEmpty) {
+          if (counter > 0) {
+            buffer.write(networkOptions.stackTraceJoinString);
+          }
+          buffer.write(
+            '$counter${line.split(options.logDelimiter).last.replaceAll(RegExp(r"\s+"), ' ')}',
+          );
+          counter++;
+        }
       }
       stack = buffer.toString();
     }
-    String timeStampMsg =
-        networkOptions.logFormatter.call(timeStamp, 'timestamp');
-    String logLevelMsg = networkOptions.logFormatter.call(logLevel, 'level');
-    String logLabelMsg = networkOptions.logFormatter.call(logLabel, 'label');
-    String logMessageMsg =
-        networkOptions.logFormatter.call(logMessage, 'message');
-    String networkContent =
-        '$timeStampMsg $logLevelMsg $logLabelMsg $logMessageMsg';
+    String timeStampMsg = networkOptions.logFormatter?.call(
+          timeStamp,
+          'timestamp',
+        ) ??
+        timeStamp;
+    String logLevelMsg = networkOptions.logFormatter?.call(
+          logLevel,
+          'level',
+        ) ??
+        logLevel;
+    String logLabelMsg = networkOptions.logFormatter?.call(
+          logLabel,
+          'label',
+        ) ??
+        logLabel;
+    String logMessageMsg = networkOptions.messageFormatter?.call(
+          logMessage,
+          'message',
+        ) ??
+        logMessage;
+
+    String networkContent = '$timeStampMsg${options.logDelimiter}$logLevelMsg'
+        '${options.logDelimiter}$logLabelMsg'
+        '${options.logDelimiter}$logMessageMsg';
     if (stack.isNotEmpty) {
-      networkContent +=
-          ' ${networkOptions.logFormatter(stack.toString(), 'trace')}';
+      String stackTraceMsg =
+          networkOptions.stackTraceFormatter?.call(stack, 'trace') ?? stack;
+      networkContent += ' $stackTraceMsg';
     }
     return '$networkContent\n';
   }
