@@ -14,6 +14,7 @@ abstract class FileManagerBase {
     required String archiveDirectory,
     required String networkDirectory,
     required String extension,
+    required bool exposeLogs,
   });
 
   /// Checks if the log directory exists.

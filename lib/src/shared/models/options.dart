@@ -1,3 +1,5 @@
+import 'package:casual_log_manager/casual_log_manager.dart';
+
 /// Configuration options for the logging system.
 class Options {
   /// Creates an [Options] instance with the given configuration.
@@ -17,6 +19,12 @@ class Options {
     this.logToNetwork = false,
     this.demangleStackTrace = true,
     this.logDelimiter = '|',
+    this.consoleFilter = const [
+      LogLevel.INFO,
+      LogLevel.WARNING,
+      LogLevel.ERROR,
+      LogLevel.ALL,
+    ],
   });
 
   /// Whether to prevent crashes using guarded zones.
@@ -39,4 +47,7 @@ class Options {
 
   /// The delimiter used in log formatting.
   final String logDelimiter;
+
+  /// List of log levels that are filtered for console logging.
+  final List<LogLevel> consoleFilter;
 }

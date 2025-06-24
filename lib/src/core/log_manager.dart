@@ -63,6 +63,7 @@ class LogManager {
       fileOptions: fileOptions,
       networkOptions: networkOptions,
       logLabel: label,
+      ensureInitialized: true,
     );
   }
 

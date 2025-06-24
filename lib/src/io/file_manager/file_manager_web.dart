@@ -74,6 +74,7 @@ class FileManager extends FileManagerBase {
     required String archiveDirectory,
     required String extension,
     required String networkDirectory,
+    required bool exposeLogs,
   }) {
     throw UnimplementedError(
       'initialize is not implemented for this platform.',

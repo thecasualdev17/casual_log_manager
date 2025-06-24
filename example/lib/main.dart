@@ -63,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void onLogExample() {
     // This is where you would log a message using log utils or logging package.
     LogManager.log('This is an example log statement.',
-        logLevel: LogLevel.INFO, label: 'example');
+        logLevel: LogLevel.NONE, label: 'example');
   }
 
   void onExceptionExample() {
@@ -84,6 +84,12 @@ class _MyHomePageState extends State<MyHomePage> {
     throw Exception('This is an example exception without try/catch.');
   }
 
+  void incrementCounter() {
+    setState(() {
+      counter++;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,24 +106,28 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
               onPressed: () {
                 onPrintExample();
+                incrementCounter();
               },
               child: Text('Example Print Statement'),
             ),
             ElevatedButton(
               onPressed: () {
                 onLogExample();
+                incrementCounter();
               },
               child: Text('Example Log Statement'),
             ),
             ElevatedButton(
               onPressed: () {
                 onExceptionExample();
+                incrementCounter();
               },
               child: Text('Example Exception with Try/Catch'),
             ),
             ElevatedButton(
               onPressed: () {
                 onExceptionExampleWithoutTryCatch();
+                incrementCounter();
               },
               child: Text('Example Exception without Try/Catch'),
             ),
