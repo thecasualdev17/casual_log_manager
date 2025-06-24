@@ -12,3 +12,7 @@
 - Updated documentation and usage examples for logging methods.
 - Internal refactoring and code cleanup
 - Added log filters for console, file and network logs.
+
+## 0.2.1
+
+- Added ensureInitialized parameter in `init`

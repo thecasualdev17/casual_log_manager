@@ -55,6 +55,7 @@ class LogManager {
     Options options = const Options(),
     FileOptions fileOptions = const FileOptions(),
     NetworkOptions networkOptions = const NetworkOptions(networkUrl: ''),
+    bool ensureInitialized = true,
   }) {
     logManagerCore = LogManagerCore();
     logManagerCore.initLogManagerCore(
@@ -63,7 +64,7 @@ class LogManager {
       fileOptions: fileOptions,
       networkOptions: networkOptions,
       logLabel: label,
-      ensureInitialized: true,
+      ensureInitialized: ensureInitialized,
     );
   }
 
