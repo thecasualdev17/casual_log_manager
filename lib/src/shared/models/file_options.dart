@@ -23,6 +23,9 @@ class FileOptions {
   /// The maximum age of logs in seconds before they are considered for deletion.
   final int maxLogAge;
 
+  /// List of log levels that are filtered for file logging.
+  final List<LogLevel> filter;
+
   /// Creates a [FileOptions] instance with the given configuration.
   ///
   /// [logGroup] sets the log grouping strategy.
@@ -36,8 +39,14 @@ class FileOptions {
     this.logFormat = LogFormats.plainText,
     this.maxFileSize = 2 * 1024 * 1024, // 2 MB
     this.fileExtension = 'log',
-    this.exposeLogs = true,
+    this.exposeLogs = false,
     this.encryptLogs = false,
     this.maxLogAge = 7 * 24 * 60 * 60, // 7 days
+    this.filter = const [
+      LogLevel.INFO,
+      LogLevel.WARNING,
+      LogLevel.ERROR,
+      LogLevel.ALL,
+    ],
   });
 }

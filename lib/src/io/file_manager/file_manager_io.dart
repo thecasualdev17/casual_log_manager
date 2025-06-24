@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'dart:developer' as developer;
 import 'dart:io';
+
+import 'package:path_provider/path_provider.dart';
 
 import 'file_manager_base.dart';
 
@@ -77,14 +80,14 @@ class FileManager extends FileManagerBase {
   /// Clears all files in [directoryPath] and calls [onClear] after clearing.
   Future<bool> clearDirectory(String directoryPath, Function onClear) async {
     final dir = Directory(directoryPath);
-    if (await dir.exists()) {
-      try {
+    try {
+      if (!await dir.exists()) {
         dir.delete(recursive: true);
         onClear();
         return Future.value(true);
-      } catch (e) {
-        return Future.value(false);
       }
+    } catch (e) {
+      return Future.value(false);
     }
     onClear();
     return Future.value(true);
@@ -98,10 +101,31 @@ class FileManager extends FileManagerBase {
     required String archiveDirectory,
     required String networkDirectory,
     required String extension,
+    required bool exposeLogs,
   }) async {
-    this.logDirectory = logDirectory;
-    this.archiveDirectory = archiveDirectory;
-    this.networkDirectory = networkDirectory;
+    String? rootPath;
+    try {
+      if (exposeLogs) {
+        if (Platform.isAndroid || Platform.isIOS) {
+          rootPath = (await getDownloadsDirectory())?.path;
+        } else {
+          rootPath = (await getApplicationDocumentsDirectory()).path;
+        }
+      } else {
+        rootPath = (await getApplicationSupportDirectory()).path;
+      }
+    } catch (e) {
+      rootPath = '';
+    }
+
+    developer.log(
+      'FileManager initialized with root path: $rootPath',
+      name: 'FileManager',
+    );
+
+    this.logDirectory = '$rootPath$logDirectory';
+    this.archiveDirectory = '$rootPath$archiveDirectory';
+    this.networkDirectory = '$rootPath$networkDirectory';
     this.extension = extension;
 
     await createLogDirectory();

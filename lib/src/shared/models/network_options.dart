@@ -1,5 +1,4 @@
-import 'package:casual_log_manager/src/shared/utils/message_formatter.dart'
-    as mf;
+import 'package:casual_log_manager/casual_log_manager.dart';
 
 /// Configuration options for network-based logging.
 class NetworkOptions {
@@ -33,14 +32,28 @@ class NetworkOptions {
   /// Maximum number of logs to send in a single batch.
   final int maxLogsPerBatch;
 
-  /// Function to format the entire log entry for network transmission.
-  final String Function(String message, String header) logFormatter;
+  /// String used to join stack trace elements in logs.
+  final String stackTraceJoinString;
+
+  /// Function to format the timestamp, level and label for network transmission.
+  final String Function(String message, String header)? logFormatter;
 
   /// Function to format the log message for network transmission.
-  final String Function(String message, String header) messageFormatter;
+  final String Function(String message, String header)? messageFormatter;
 
   /// Function to format the stack trace for network transmission.
-  final String Function(String message, String header) stackTraceFormatter;
+  final String Function(String message, String header)? stackTraceFormatter;
+
+  /// List of log levels that are filtered for network transmission.
+  final List<LogLevel> filter;
+
+  /// Function to format the body of the network request.
+  final Map<String, String> Function({
+    required String timestamp,
+    required String level,
+    required String label,
+    required String message,
+  })? networkBodyFormatter;
 
   /// Creates a [NetworkOptions] instance with the given configuration.
   ///
@@ -68,8 +81,16 @@ class NetworkOptions {
     this.networkLogsFileName = 'network_logs',
     this.maxFrames = 10,
     this.maxLogsPerBatch = 50,
-    this.logFormatter = mf.logFormatter,
-    this.messageFormatter = mf.logFormatter,
-    this.stackTraceFormatter = mf.logFormatter,
+    this.logFormatter,
+    this.messageFormatter,
+    this.stackTraceFormatter,
+    this.stackTraceJoinString = '#',
+    this.networkBodyFormatter,
+    this.filter = const [
+      LogLevel.INFO,
+      LogLevel.WARNING,
+      LogLevel.ERROR,
+      LogLevel.ALL,
+    ],
   });
 }

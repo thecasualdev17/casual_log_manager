@@ -40,6 +40,7 @@ class NetworkManager {
       return checkResponse(response);
     } catch (e) {
       developer.log('Error Sending log to server $e');
+      developer.log(logs.toString());
       return false;
     }
   }
